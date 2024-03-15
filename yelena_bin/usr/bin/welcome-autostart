@@ -1,0 +1,53 @@
+#!/bin/bash
+
+# Verificar si el usuario actual es root (UID es 0)
+if [ "$UID" -eq 0 ]; then
+    # Mostrar un mensaje si el usuario es root
+    echo "You cannot run this script as superuser"
+    exit
+fi
+
+
+# Función añadir repositorio
+remove_autostart() {
+    echo "Removing the autostart welcome window..."
+
+	sed -i '/^exec --no-startup-id python3 \/usr\/share\/welcome_cuerd\/welcome.py/s/^/# /' ~/.config/i3/config > /dev/null 2>&1
+	sed -i '/^exec --no-startup-id python3 \/usr\/share\/welcome_cuerd\/welcome.py/s/^/# /' ~/.config/sway/config > /dev/null 2>&1
+	sed -i 's/Hidden=false/Hidden=true/' /home/~/.config/autostart/cuerdos-welcome.desktop > /dev/null 2>&1
+        echo "Done."
+}
+
+# Función remover repositorio
+add_autostart() {
+    echo "Adding the welcome window to the autostart...."
+
+	sed -i '/^# exec --no-startup-id python3 \/usr\/share\/welcome_cuerd\/welcome.py/s/^# //' ~/.config/i3/config > /dev/null 2>&1
+	sed -i '/^# exec --no-startup-id python3 \/usr\/share\/welcome_cuerd\/welcome.py/s/^# //' ~/.config/sway/config > /dev/null 2>&1
+	sed -i 's/Hidden=true/Hidden=false/' ~/.config/autostart/cuerdos-welcome.desktop > /dev/null 2>&1
+	echo "Done."
+}
+
+# Menú de selescción
+echo "Select an option:"
+echo "1. Remove the autostart welcome window."
+echo "2. Add the welcome window to the autostart."
+read -p "Option: " option
+
+# Procesar el selector de opciones
+case $option in
+    1)
+        remove_autostart
+        ;;
+    2)
+        add_autostart
+        ;;
+    *)
+        echo "Invalid option. Exiting."
+        exit 1
+        ;;
+esac
+
+# Prompt presione Enter para salir
+read -p "Press Enter to exit..."
+

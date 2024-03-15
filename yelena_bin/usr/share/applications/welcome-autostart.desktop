@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Welcome autostart
+Name[es]=Welcome autostart
+Comment=Enable/Disable the autostart welcome.
+Exec=x-terminal-emulator -e "welcome-autostart"
+Icon=cuerdos-icon
+Terminal=false
+Categories=System;Settings;X-XFCE-SettingsDialog;X-XFCE-SystemSettings

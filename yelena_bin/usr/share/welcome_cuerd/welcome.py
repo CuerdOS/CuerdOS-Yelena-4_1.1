@@ -1,7 +1,6 @@
 import os
 import gi
 import subprocess
-import configparser
 
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, Gdk
@@ -10,7 +9,7 @@ class WelcomeWindow(Gtk.Window):
 
     def __init__(self):
         Gtk.Window.__init__(self)
-        self.set_title("CuerdOS Yelena 1.0.1")
+        self.set_title("CuerdOS Yelena 1.0")
 
         icon_path = "/usr/share/welcome_cuerd/welcome.png"
 
@@ -85,25 +84,16 @@ class WelcomeWindow(Gtk.Window):
         github_button.set_image(Gtk.Image.new_from_file(os.path.join(icon_folder, "github.png")))
         github_button.connect("clicked", self.on_github_button_clicked)
         github_button.set_size_request(80, 40)
-        
-        reddit_button = Gtk.Button(label="Reddit")
-        reddit_button.set_image(Gtk.Image.new_from_file(os.path.join(icon_folder, "reddit.png")))
-        reddit_button.connect("clicked", self.on_reddit_button_clicked)
-        reddit_button.set_size_request(80, 40)
-        
-        sourceforge_button = Gtk.Button(label="SourceForge")
-        sourceforge_button.set_image(Gtk.Image.new_from_file(os.path.join(icon_folder, "sourceforge.png")))
-        sourceforge_button.connect("clicked", self.on_sourceforge_button_clicked)
-        sourceforge_button.set_size_request(80, 40)
 
         buttons_box2 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
-        buttons_box2.pack_start(telegram_button, False, False, 0)
-        buttons_box2.pack_start(github_button, False, False, 0)
         buttons_box2.pack_end(exit_button, False, False, 0)
-        buttons_box2.pack_end(reddit_button, False, False, 0)
-        buttons_box2.pack_end(sourceforge_button, False, False, 0)
+        buttons_box2.pack_end(telegram_button, False, False, 0)
+        buttons_box2.pack_end(github_button, False, False, 0)
         
         main_box.pack_end(buttons_box2, False, False, 0)
+
+#        startup_check = Gtk.CheckButton(label="No iniciar al encender")
+#        main_box.pack_end(startup_check, False, False, 0)
 
         # Image Viewer
         self.setup_image_viewer()
@@ -152,11 +142,11 @@ class WelcomeWindow(Gtk.Window):
         self.stack.set_visible_child_name("image_viewer")
         self.show_navigation_buttons()
         self.image_paths = [
-            os.path.join(self.images_folder, "imag1.png"),
-            os.path.join(self.images_folder, "imag2.png"),
-            os.path.join(self.images_folder, "imag3.png"),
-            os.path.join(self.images_folder, "imag4.png"),
-            os.path.join(self.images_folder, "imag5.png")
+            os.path.join(self.images_folder, "/usr/share/welcome_cuerd/imag3.png"),
+            os.path.join(self.images_folder, "/usr/share/welcome_cuerd/imag4.png"),
+            os.path.join(self.images_folder, "/usr/share/welcome_cuerd/multimedia.png"),
+            os.path.join(self.images_folder, "/usr/share/welcome_cuerd/oficina.png"),
+            os.path.join(self.images_folder, "/usr/share/welcome_cuerd/imag5.png"),
         ]
         self.current_image_index = 0
         self.image_viewer.set_from_file(self.image_paths[self.current_image_index])
@@ -173,20 +163,14 @@ class WelcomeWindow(Gtk.Window):
     def on_github_button_clicked(self, button):
         subprocess.Popen(["firefox", "https://github.com/CuerdOS"])
 
-    def on_reddit_button_clicked(self, button):
-        subprocess.Popen(["firefox", "https://www.reddit.com/r/CuerdOS/"])
-
-    def on_sourceforge_button_clicked(self, button):
-        subprocess.Popen(["firefox", "https://sourceforge.net/projects/cuerdos/"])
-
     def on_documentation_button_clicked(self, button):
         self.stack.set_visible_child_name("image_viewer")
         self.show_navigation_buttons()
         self.image_paths = [
-            os.path.join(self.images_folder, "doc4.png"),
-            os.path.join(self.images_folder, "doc5.png"),
-            os.path.join(self.images_folder, "doc6.png"),
-            os.path.join(self.images_folder, "doc7.png")
+            os.path.join(self.images_folder, "/usr/share/welcome_cuerd/doc2.png"),
+            os.path.join(self.images_folder, "/usr/share/welcome_cuerd/doc3.png"),
+            os.path.join(self.images_folder, "/usr/share/welcome_cuerd/doc4.png"),
+            os.path.join(self.images_folder, "/usr/share/welcome_cuerd/doc5.png")
         ]
         self.current_image_index = 0
         self.image_viewer.set_from_file(self.image_paths[self.current_image_index])
@@ -224,7 +208,6 @@ class WelcomeWindow(Gtk.Window):
             self.on_back_button_clicked(None)
         elif keyval == Gdk.KEY_Right:
             self.on_next_button_clicked(None)
-
 
 win = WelcomeWindow()
 win.connect("destroy", Gtk.main_quit)
